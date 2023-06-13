@@ -1441,14 +1441,14 @@ const APP_KEY_HANDLE  app_key_handle_cfg[] = {
 	//{{HAL_KEY_CODE_FN5,APP_KEY_EVENT_UP},"bt anc key",app_bt_key, NULL},//add by cai
 	{{HAL_KEY_CODE_FN5,APP_KEY_EVENT_DOUBLECLICK},"bt anc key",app_bt_key, NULL},//add by cai
 	
-	{{HAL_KEY_CODE_FN6,APP_KEY_EVENT_LONGPRESS},"bt quick monitor",app_bt_key, NULL},
-	{{HAL_KEY_CODE_FN6,APP_KEY_EVENT_UP_AFTER_LONGPRESS},"bt quick monitor",app_bt_key, NULL},
-	{{HAL_KEY_CODE_FN6,APP_KEY_EVENT_DOUBLECLICK},"game mode",app_bt_key, NULL},
+	//{{HAL_KEY_CODE_FN6,APP_KEY_EVENT_LONGPRESS},"bt quick monitor",app_bt_key, NULL},
+	//{{HAL_KEY_CODE_FN6,APP_KEY_EVENT_UP_AFTER_LONGPRESS},"bt quick monitor",app_bt_key, NULL},
+	//{{HAL_KEY_CODE_FN6,APP_KEY_EVENT_DOUBLECLICK},"game mode",app_bt_key, NULL},
 	{{HAL_KEY_CODE_FN5,APP_KEY_EVENT_LONGLONGPRESS},"siri",app_bt_key, NULL},//m by cai
 	//{{HAL_KEY_CODE_FN6,APP_KEY_EVENT_ULTRACLICK},"siri",app_bt_key, NULL},
 
 	{{HAL_KEY_CODE_FN5|APP_KEY_CODE_PWR,APP_KEY_EVENT_LONGLONGLONGLONGPRESS},"factory reset",app_bt_key, NULL},
-	{{APP_KEY_CODE_FN1|APP_KEY_CODE_PWR,APP_KEY_EVENT_LONGLONGLONGLONGPRESS},"demo mode",app_bt_key, NULL},//add by cai
+	//{{APP_KEY_CODE_FN1|APP_KEY_CODE_PWR,APP_KEY_EVENT_LONGLONGLONGLONGPRESS},"demo mode",app_bt_key, NULL},//add by cai
 #ifdef SUPPORT_SIRI
     //{{APP_KEY_CODE_NONE ,APP_KEY_EVENT_NONE},"none function key",app_bt_key, NULL},
 #endif

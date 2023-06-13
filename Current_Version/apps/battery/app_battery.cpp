@@ -689,7 +689,7 @@ int app_battery_open(void)
     }
 
 #if defined(__NTC_DETECT__)
-	ntc_capture_open();//add by pang
+	//ntc_capture_open();//add by pang
 #endif
 
 #if defined(__DEFINE_DEMO_MODE__)

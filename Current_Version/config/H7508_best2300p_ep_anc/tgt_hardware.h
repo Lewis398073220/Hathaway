@@ -37,6 +37,10 @@ extern const char *BT_FIRMWARE_VERSION;
 #endif
 #define ANC_KEY_DETECTE HAL_IOMUX_PIN_P1_0
 
+#if defined(__ADC_3V3_CTR__)
+extern const struct HAL_IOMUX_PIN_FUNCTION_MAP cfg_hw_adc_3_3v_control;
+#endif
+
 #if defined(__LDO_3V3_CTR__)
 extern const struct HAL_IOMUX_PIN_FUNCTION_MAP cfg_hw_pio_3_3v_control;
 #endif
@@ -90,7 +94,7 @@ extern const uint16_t CFG_HW_ADCKEY_MAP_TABLE[CFG_HW_ADCKEY_NUMBER];
 #define CFG_HW_GPIOKEY_NUM (0)
 #else
 //gpiokey define
-#define CFG_HW_GPIOKEY_NUM (3)
+#define CFG_HW_GPIOKEY_NUM (2)
 #endif
 extern const struct HAL_KEY_GPIOKEY_CFG_T cfg_hw_gpio_key_cfg[CFG_HW_GPIOKEY_NUM];
 

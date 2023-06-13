@@ -80,7 +80,8 @@ ccflags-y +=  \
     -Iservices/app_tws/inc \
     -Ithirdparty/tile/tile_target \
 	-Iapps\userapps \
-	-Iplatform\drivers\cst816s
+	-Iplatform\drivers\cst816s \
+	-Iplatform/drivers/ac107
 
 ifeq ($(VOICE_DATAPATH_ENABLED),1)
 ccflags-y += -Iservices/voicepath/$(VOICE_DATAPATH_TYPE)

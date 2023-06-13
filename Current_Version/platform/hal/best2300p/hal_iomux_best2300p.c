@@ -86,7 +86,7 @@
 #endif
 
 #ifndef I2S_MCLK_IOMUX_INDEX
-#define I2S_MCLK_IOMUX_INDEX                0
+#define I2S_MCLK_IOMUX_INDEX                13//0//m by cai
 #endif
 
 #ifndef SPDIF0_IOMUX_INDEX

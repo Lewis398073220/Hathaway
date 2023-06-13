@@ -19,7 +19,7 @@
 #include "avctp_api.h"
 #include "bluetooth.h"
 #include "plat_types.h"
-#include "cqueue.h"
+#include "..\..\..\utils\cqueue\cqueue.h"
 
 #define BTIF_AVRCP_MAX_CHAR_SETS                 10
 

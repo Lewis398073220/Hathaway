@@ -45,7 +45,7 @@
 #endif
 
 #ifndef I2S_MCLK_DIV
-#define I2S_MCLK_DIV                    2
+#define I2S_MCLK_DIV                    1//2 m by pang (i2s/MCLK: 1=24.576Mhz;2=12.298Mhz)
 #endif
 
 enum HAL_I2S_STATUS_T {

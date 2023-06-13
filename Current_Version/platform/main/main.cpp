@@ -150,6 +150,14 @@ int tgt_hardware_setup(void)
     }	
 #endif
 
+#if defined(__ADC_3V3_CTR__) 
+				if (cfg_hw_adc_3_3v_control.pin != HAL_IOMUX_PIN_NUM){
+					hal_iomux_init((struct HAL_IOMUX_PIN_FUNCTION_MAP *)&cfg_hw_adc_3_3v_control, 1);
+					hal_gpio_pin_set_dir((enum HAL_GPIO_PIN_T)cfg_hw_adc_3_3v_control.pin, HAL_GPIO_DIR_OUT, 0);//m by cai
+				}
+#endif
+
+
 #if defined(__LDO_3V3_CTR__) 
 		if (cfg_hw_pio_3_3v_control.pin != HAL_IOMUX_PIN_NUM){
 			hal_iomux_init((struct HAL_IOMUX_PIN_FUNCTION_MAP *)&cfg_hw_pio_3_3v_control, 1);

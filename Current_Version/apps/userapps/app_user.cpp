@@ -331,32 +331,23 @@ void apps_jack_event_process(void)
 	if((in_val==CHECK_3_5JACK_MAX_NUM)&&(jack_3p5_plug_in_flag==0)){
 		TRACE(0,"***detected 3_5jack in!");
 	    reconncect_null_by_user=true;
-		//app_disconnect_all_bt_connections();
-	    //app_bt_accessmode_set(BTIF_BAM_NOT_ACCESSIBLE);	
-		//app_status_indication_set(APP_STATUS_INDICATION_CONNECTED);		
+		app_disconnect_all_bt_connections();
+	    app_bt_accessmode_set(BTIF_BAM_NOT_ACCESSIBLE);	
+		app_status_indication_set(APP_STATUS_INDICATION_CONNECTED);		
 #if defined(__AC107_ADC__)
 		ac107_hw_open();
 		ac107_i2c_init();
 #endif
-	   hal_codec_dac_mute(1);
-		jack_3p5_plug_in_flag=1;
-		jack_count=0;
-	
-		//app_poweroff_flag = 1;
-		app_shutdown();//shutdown
 	}
-	/*
+	
     if(in_val>(CHECK_3_5JACK_MAX_NUM+1) && (jack_3p5_plug_in_flag==0)){		
 #if defined(__AC107_ADC__)
 		ac107_hw_init();
 #endif
 		jack_3p5_plug_in_flag=1;
 		jack_count=0;
-
-		//app_poweroff_flag = 1;
-		app_shutdown();//shutdown
-	}*/
-/*	
+	}
+	
 	if((out_val>CHECK_3_5JACK_MAX_NUM)&&(jack_3p5_plug_in_flag==1)){
 		TRACE(0,"***detected 3_5jack out!");
 		out_val=CHECK_3_5JACK_MAX_NUM;
@@ -380,7 +371,6 @@ void apps_jack_event_process(void)
 		}
 #endif
 	}
-*/
 }
 #endif
 
@@ -1048,7 +1038,7 @@ IIR_CFG_T eq_custom_para_ancoff={
 	}
 };
 */
-/*
+
 IIR_CFG_T eq_custom_para_linein={
     .gain0 = -6,
     .gain1 = -6,
@@ -1062,7 +1052,7 @@ IIR_CFG_T eq_custom_para_linein={
 		{IIR_TYPE_PEAK, .0, 12000, 1.0},
 	}
 };
-*/
+
 uint8_t app_eq_index_get(void)
 {   
 	return (eq_set_index);
