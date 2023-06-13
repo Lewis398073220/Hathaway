@@ -623,18 +623,11 @@ const SpeechConfig WEAK speech_cfg_default = {
     .tx_eq = {
         .bypass     = 0,
         .gain       = 0.f,
-        .num        = 5,
-        .params = {
-        	{IIR_BIQUARD_LOWSHELF,  {{ 100,-3, 0.7}}},
-        	{IIR_BIQUARD_PEAKINGEQ, {{1000, 2, 2.0}}},
-			{IIR_BIQUARD_PEAKINGEQ, {{1250, 3, 0.8}}},
-            {IIR_BIQUARD_PEAKINGEQ, {{3000, 4, 1.0}}},
-            {IIR_BIQUARD_PEAKINGEQ, {{6000, 3, 1.0}}},
-        	/*
+        .num        = 3,
+        .params = {           
 			{IIR_BIQUARD_LOWSHELF,  {{ 100, -3, 0.7}}},
 			{IIR_BIQUARD_PEAKINGEQ, {{1500, 3, 1.0}}},
             {IIR_BIQUARD_PEAKINGEQ, {{2360, 3, 1.0}}},
-            */
            // {IIR_BIQUARD_PEAKINGEQ, {{6000, 3, 0.8}}},
         },
     },
