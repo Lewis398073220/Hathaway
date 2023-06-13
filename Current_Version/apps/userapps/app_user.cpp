@@ -965,10 +965,10 @@ static void app_audio_fadein_timehandler(void const *param)
 
 void app_audio_fadein_start(uint8_t audio_type)
 {
-//	if(audio_type)
+	if(audio_type)
 	  	audio_fade_volume=app_bt_stream_a2dpvolume_get_user();
-//	else
-//		audio_fade_volume=app_bt_stream_lineinvolume_get_user();
+	else
+		audio_fade_volume=app_bt_stream_lineinvolume_get_user();
 
 /*	
 	if(audio_fade_volume>8)

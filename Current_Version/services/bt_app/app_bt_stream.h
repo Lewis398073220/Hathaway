@@ -151,6 +151,7 @@ uint8_t app_bt_stream_hfpvolume_get(void);
 
 uint8_t app_bt_stream_a2dpvolume_get_user(void);//add by pang
 uint8_t app_bt_stream_hfpvolume_get_user(void);//add by pang
+uint8_t app_bt_stream_lineinvolume_get_user(void);//add by pang
 
 void app_bt_stream_a2dpvolume_reset(void);
 

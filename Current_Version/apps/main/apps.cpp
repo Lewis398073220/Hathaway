@@ -526,6 +526,11 @@ int app_voice_report_handler(APP_STATUS_INDICATION_T status, uint8_t device_id, 
 		hal_gpio_pin_set((enum HAL_GPIO_PIN_T)cfg_hw_pio_AMP_mute_control.pin);
 #endif
 
+#if defined(__USE_3_5JACK_CTR__)
+	if(app_apps_3p5jack_plugin_flag(1)){
+		app_play_linein_onoff(0);
+	}
+#endif
 /** end add **/
     TRACE(3,"%s %d%s",__func__, status, status2str((uint16_t)status));
     AUD_ID_ENUM id = MAX_RECORD_NUM;

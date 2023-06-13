@@ -6575,7 +6575,7 @@ int app_play_linein_onoff(bool onoff)
 
 #ifdef __SW_IIR_EQ_PROCESS__
         //bt_audio_set_eq(AUDIO_EQ_TYPE_SW_IIR,bt_audio_get_eq_index(AUDIO_EQ_TYPE_SW_IIR,0));
-		bt_audio_set_eq(AUDIO_EQ_TYPE_SW_IIR,bt_audio_get_eq_index(AUDIO_EQ_TYPE_SW_IIR,app_eq_index_get()));//m by pang
+		bt_audio_set_eq(AUDIO_EQ_TYPE_SW_IIR,bt_audio_get_eq_index(AUDIO_EQ_TYPE_SW_IIR,app_get_anc_mode()));//m by pang
 #endif
 
 #ifdef __HW_FIR_EQ_PROCESS__
@@ -6994,13 +6994,23 @@ int app_bt_stream_restart(APP_AUDIO_STATUS* status)
 void app_bt_stream_volumeup(void)
 {
 #if defined AUDIO_LINEIN
-    if(app_bt_stream_isrun(APP_PLAY_LINEIN_AUDIO))
+    //if(app_bt_stream_isrun(APP_PLAY_LINEIN_AUDIO))
+	if(app_apps_3p5jack_plugin_flag(0))//m by pang
     {
         stream_linein_volume ++;
         if (stream_linein_volume > TGT_VOLUME_LEVEL_15)
         stream_linein_volume = TGT_VOLUME_LEVEL_15;
-        app_bt_stream_volumeset(stream_linein_volume);
+		if(stream_linein_volume < TGT_VOLUME_LEVEL_15)
+        {
+        	app_bt_stream_volumeset(stream_linein_volume+17);//m by pang for volume independent
+		}		
         TRACE(1,"set linein volume %d\n", stream_linein_volume);
+		 if(stream_linein_volume == TGT_VOLUME_LEVEL_15)
+		{
+#ifdef MEDIA_PLAYER_SUPPORT
+			app_voice_report(APP_STATUS_INDICATION_VOLMINMAX, 0);
+#endif
+		}
     }else
 #endif
     {
@@ -7130,6 +7140,12 @@ void app_bt_stream_volumedown(void)
             stream_linein_volume = TGT_VOLUME_LEVEL_MUTE;
         app_bt_stream_volumeset(stream_linein_volume+17);//m by pang for volume independent
         TRACE(1,"set linein volume %d\n", stream_linein_volume);
+		 if(stream_linein_volume == TGT_VOLUME_LEVEL_MUTE)
+		{
+#ifdef MEDIA_PLAYER_SUPPORT
+			app_voice_report(APP_STATUS_INDICATION_VOLMINMAX, 0);
+#endif
+		}
     }else
 #endif
     {
@@ -7268,6 +7284,11 @@ uint8_t app_bt_stream_a2dpvolume_get_user(void)//add by pang
 {
     return btdevice_volume_p->a2dp_vol;
    //return current_btdevice_volume.a2dp_vol;
+}
+
+uint8_t app_bt_stream_lineinvolume_get_user(void)//add by pang
+{
+    return stream_linein_volume;
 }
 
 uint8_t app_bt_stream_hfpvolume_get(void)
