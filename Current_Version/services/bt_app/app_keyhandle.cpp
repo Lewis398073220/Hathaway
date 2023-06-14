@@ -1319,7 +1319,7 @@ static void key_click_bt_off(void)
 #endif
 }
 */
-/*
+
 static void bt_key_handle_game_key(void)
 {
 #ifdef __BT_ONE_BRING_TWO__	
@@ -1327,11 +1327,11 @@ static void bt_key_handle_game_key(void)
 	if(hfcall_machine==HFCALL_MACHINE_CURRENT_IDLE_ANOTHER_IDLE){
 		if(get_app_gaming_mode()){
 			app_gaming_mode(0);
-			app_voice_report(APP_STATUS_INDICATION_GAMING_OFF, 0);
+			//app_voice_report(APP_STATUS_INDICATION_GAMING_OFF, 0);
 		}
 		else{
 			app_gaming_mode(1);
-			app_voice_report(APP_STATUS_INDICATION_GAMING_ON, 0);
+			//app_voice_report(APP_STATUS_INDICATION_GAMING_ON, 0);
 		}
 		#if defined(__HAYLOU_APP__)
 		Set_Report_Device_Status();
@@ -1339,7 +1339,7 @@ static void bt_key_handle_game_key(void)
 	}
 #endif
 }
-*/
+
 
 void bt_key_handle_cover_key(enum APP_KEY_EVENT_T event)
 {
@@ -1463,18 +1463,7 @@ void bt_key_handle_ANC_key(enum APP_KEY_EVENT_T event)
 			break;
 
 		case APP_KEY_EVENT_DOUBLECLICK:
-#ifdef MEDIA_PLAYER_SUPPORT
-			if(!app_bt_is_connected())
-			{
-				if(app_play_audio_get_lang() == MEDIA_DEFAULT_LANGUAGE){
-					app_voice_report(APP_STATUS_INDICATION_BEEP_22, 0);
-					app_nvrecord_language_set(1);
-				} else{
-					app_voice_report(APP_STATUS_INDICATION_BEEP_22, 0);
-					app_nvrecord_language_set(MEDIA_DEFAULT_LANGUAGE);
-				}
-			}	
-#endif
+			bt_key_handle_game_key();
 			break;
 			
 		case APP_KEY_EVENT_LONGLONGPRESS:

@@ -342,7 +342,7 @@ int app_battery_handle_process_normal(uint32_t status,  union APP_BATTERY_MSG_PR
 #if 1 //m by pang
 			//5分钟提示一次低电 add by cai
 			TRACE(2,"********batterylow: %d", lowbat_warning_time);
-			if((lowbat_warning_time == 0) || (lowbat_warning_time == 76)){
+			if((lowbat_warning_time == 0) || (lowbat_warning_time == 38)){
 				app_voice_report(APP_STATUS_INDICATION_CHARGENEED, 0);
 				lowbat_warning_time = 0;
 			}

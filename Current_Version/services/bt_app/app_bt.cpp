@@ -187,7 +187,7 @@ openning reconnect time      = (RECONNECT_RETRY_INTERVAL_MS+PAGETO)*OPENNING_REC
                              = 16s
 ======================================================================================================*/
 #define APP_BT_PROFILE_RECONNECT_RETRY_INTERVAL_MS (3000)
-#define APP_BT_PROFILE_OPENNING_RECONNECT_RETRY_LIMIT_CNT   (8)//(15) //m by cai
+#define APP_BT_PROFILE_OPENNING_RECONNECT_RETRY_LIMIT_CNT   (2)//(15) //m by cai
 #define APP_BT_PROFILE_RECONNECT_RETRY_LIMIT_CNT (38)//(50) //m by cai
 #define APP_BT_PROFILE_CONNECT_RETRY_MS (10000)
 
@@ -3457,7 +3457,7 @@ void app_bt_profile_connect_manager_hf(enum BT_DEVICE_ID_T id, hf_chan_handle_t 
 		factory_reset_flag=0;
 		app_stop_10_second_timer(APP_POWEROFF_TIMER_ID);
 		app_stop_10_second_timer(APP_BTOFF_POWEROFF_TIMER_ID);
-		app_status_indication_recover_set(APP_STATUS_INDICATION_CONNECTING);//add by cai
+		//app_status_indication_recover_set(APP_STATUS_INDICATION_CONNECTING);//add by cai
 		app_status_indication_set(APP_STATUS_INDICATION_CONNECTED);
 		//app_status_indication_set_next(APP_STATUS_INDICATION_CONNECTING,APP_STATUS_INDICATION_CONNECTED);
 
@@ -3727,6 +3727,7 @@ void app_bt_profile_connect_manager_a2dp(enum BT_DEVICE_ID_T id, a2dp_stream_t *
                        profile_reconnect_enable = true;
                        bt_profile_manager[id].a2dp_connect = bt_profile_connect_status_unknow;
                    }
+				   else app_bt_accessmode_set_req(BTIF_BT_DEFAULT_ACCESS_MODE_PAIR);//add by cai
                 }else if (bt_profile_manager[id].reconnect_mode == bt_profile_reconnect_reconnecting){
                    if (bt_profile_manager[id].reconnect_cnt++ < APP_BT_PROFILE_RECONNECT_RETRY_LIMIT_CNT){
                        app_bt_accessmode_set(BTIF_BAM_CONNECTABLE_ONLY);
@@ -3947,7 +3948,7 @@ void app_bt_profile_connect_manager_a2dp(enum BT_DEVICE_ID_T id, a2dp_stream_t *
 		factory_reset_flag=0;
 		app_stop_10_second_timer(APP_POWEROFF_TIMER_ID);
 		app_stop_10_second_timer(APP_BTOFF_POWEROFF_TIMER_ID);
-		app_status_indication_recover_set(APP_STATUS_INDICATION_CONNECTING);//add by cai
+		//app_status_indication_recover_set(APP_STATUS_INDICATION_CONNECTING);//add by cai
 		app_status_indication_set(APP_STATUS_INDICATION_CONNECTED);
 		//app_status_indication_set_next(APP_STATUS_INDICATION_CONNECTING,APP_STATUS_INDICATION_CONNECTED);
 
@@ -5547,7 +5548,7 @@ static void reconnect_timeout_handler(void const *param);
 osTimerDef(RECONNECT_TIMEOUT_TIMER, reconnect_timeout_handler);// define timers
 uint8_t reconnect_type=0;
 uint8_t reconnect_detect_num=0;
-#define OPENRECONNECT_TIMEOUT_IN_MS	(60000)//(32000) //m by cai
+#define OPENRECONNECT_TIMEOUT_IN_MS	(10000)//(32000) //m by cai
 #define RECONNECT_TIMEOUT_IN_MS	(12000)//10000
 
 static void reconnect_timeout_set(uint8_t rect)
@@ -5604,13 +5605,28 @@ static void reconnect_timeout_handler(void const *param)
 			bt_profile_manager[BT_DEVICE_ID_2].reconnect_mode = bt_profile_reconnect_null;
 			oenreconnect_flag=1;
 		}
-
+		app_bt_accessmode_set_req(BTIF_BT_DEFAULT_ACCESS_MODE_PAIR);//add by cai
     	if(oenreconnect_flag){
 			app_bt_update_connectable_mode_after_connection_management();			
     	}	
 	}
 	//osTimerDelete(reconnect_timeout_timer);
 #endif
+}
+
+void app_stop_openreconnecting(void)//add by cai
+{
+#ifdef __IAG_BLE_INCLUDE__
+	app_ble_refresh_adv_state(BLE_ADVERTISING_INTERVAL);
+#endif
+	osTimerStop(bt_profile_manager[BT_DEVICE_ID_1].connect_timer);
+	osTimerStop(bt_profile_manager[BT_DEVICE_ID_2].connect_timer);
+	bt_profile_manager[BT_DEVICE_ID_1].reconnect_cnt = APP_BT_PROFILE_RECONNECT_RETRY_LIMIT_CNT;
+	bt_profile_manager[BT_DEVICE_ID_2].reconnect_cnt = APP_BT_PROFILE_RECONNECT_RETRY_LIMIT_CNT;
+
+	bt_profile_manager[BT_DEVICE_ID_1].reconnect_mode = bt_profile_reconnect_null;
+	bt_profile_manager[BT_DEVICE_ID_2].reconnect_mode = bt_profile_reconnect_null;
+	app_bt_update_connectable_mode_after_connection_management();	
 }
 
 void app_get_curr_remDev(unsigned char* mobile_addr)

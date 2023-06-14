@@ -84,6 +84,8 @@ typedef enum
 #define MAX_ACTIVE_MODE_MANAGED_LINKS       3  
 #define UPDATE_ACTIVE_MODE_FOR_ALL_LINKS    MAX_ACTIVE_MODE_MANAGED_LINKS
 
+void app_stop_openreconnecting(void);//add by cai
+
 void app_bt_active_mode_manager_init(void);
 
 void app_bt_active_mode_reset(uint32_t linkIndex);

@@ -1408,7 +1408,7 @@ const APP_KEY_HANDLE  app_key_handle_cfg[] = {
 const APP_KEY_HANDLE  app_key_handle_cfg[] = {
     {{APP_KEY_CODE_PWR,APP_KEY_EVENT_LONGLONGLONGLONGLONGPRESS},"bt function key",app_bt_key_shutdown, NULL},
     {{APP_KEY_CODE_PWR,APP_KEY_EVENT_LONGLONGPRESS},"bt function key",app_bt_key, NULL},
-	{{APP_KEY_CODE_PWR,APP_KEY_EVENT_LONGLONGLONGPRESS},"bt function key",app_bt_key, NULL},
+	//{{APP_KEY_CODE_PWR,APP_KEY_EVENT_LONGLONGLONGPRESS},"bt function key",app_bt_key, NULL},
 #if defined(BT_USB_AUDIO_DUAL_MODE_TEST) && defined(BT_USB_AUDIO_DUAL_MODE)
     //{{APP_KEY_CODE_PWR,APP_KEY_EVENT_CLICK},"bt function key",app_bt_key, NULL},
 #ifdef RB_CODEC
@@ -2247,8 +2247,16 @@ extern int rpc_service_setup(void);
 #endif
 #if defined( __BTIF_EARPHONE__) && defined(__BTIF_BT_RECONNECT__)
 #if !defined(IBRT)
-		power_on_open_reconnect_flag=1;//add by pang
+#ifdef __AC107_ADC__
+		if(apps_3p5_jack_get_val()) ;
+		else{
+			power_on_open_reconnect_flag=0;//add by pang
+			app_bt_profile_connect_manager_opening_reconnect();
+		}
+#else//m by cai
+		power_on_open_reconnect_flag=0;//add by pang
         app_bt_profile_connect_manager_opening_reconnect();
+#endif
 #endif
 #endif
 
@@ -2422,8 +2430,16 @@ extern int rpc_service_setup(void);
                 default:
                     //app_status_indication_set(APP_STATUS_INDICATION_PAGESCAN);
 #if defined( __BTIF_EARPHONE__) && defined(__BTIF_BT_RECONNECT__) && !defined(IBRT)
+#ifdef __AC107_ADC__
+					if(apps_3p5_jack_get_val()) ;
+					else{
+						power_on_open_reconnect_flag=0;//add by pang
+						app_bt_profile_connect_manager_opening_reconnect();
+					}
+#else//m by cai
 					power_on_open_reconnect_flag=0;//add by pang
-                    app_bt_profile_connect_manager_opening_reconnect();
+					app_bt_profile_connect_manager_opening_reconnect();
+#endif
 #endif
 #ifdef __THIRDPARTY
                     app_thirdparty_specific_lib_event_handle(THIRDPARTY_FUNC_NO2,THIRDPARTY_BT_CONNECTABLE);
