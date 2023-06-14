@@ -3322,8 +3322,8 @@ int bt_sbc_player(enum PLAYER_OPER_T on, enum APP_SYSFREQ_FREQ_T freq)
 
 	my_codetype=codec_type;
 	TRACE(3,"%s,codec_type=%d",__func__,codec_type);//add by pang
-	if (on == PLAYER_OPER_START)
-	  app_status_indication_set_next(APP_STATUS_INDICATION_A2DP,APP_STATUS_INDICATION_CONNECTED);//m by cai
+	//if (on == PLAYER_OPER_START)
+	  //app_status_indication_set_next(APP_STATUS_INDICATION_A2DP,APP_STATUS_INDICATION_CONNECTED);//m by cai
 #endif
 /** end add **/
 #endif

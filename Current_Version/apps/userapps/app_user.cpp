@@ -331,10 +331,12 @@ void apps_jack_event_process(void)
 	if((in_val==CHECK_3_5JACK_MAX_NUM)&&(jack_3p5_plug_in_flag==0)){
 		TRACE(0,"***detected 3_5jack in!");
 	    reconncect_null_by_user=true;
-		app_stop_10_second_timer(APP_POWEROFF_TIMER_ID);//add by cai	
+		app_stop_10_second_timer(APP_POWEROFF_TIMER_ID);//add by cai
+		reconnect_timeout_stop();//add by cai
+		app_stop_openreconnecting();//add by cai
 		app_disconnect_all_bt_connections();
 	    app_bt_accessmode_set(BTIF_BAM_NOT_ACCESSIBLE);	
-		app_status_indication_set(APP_STATUS_INDICATION_CONNECTED);		
+		app_status_indication_set(APP_STATUS_INDICATION_LINEIN);		
 #if defined(__AC107_ADC__)
 		ac107_hw_open();
 		ac107_i2c_init();
@@ -358,6 +360,7 @@ void apps_jack_event_process(void)
 #if defined(AUDIO_LINEIN)
 		app_play_linein_onoff(0);
 #endif
+		power_on_open_reconnect_flag=0;//add by cai
 		app_bt_profile_connect_manager_opening_reconnect();
 		app_start_10_second_timer(APP_POWEROFF_TIMER_ID);//add by cai
 #if defined(__AC107_ADC__)

@@ -43,7 +43,7 @@
 #define DEMO_MODE 0xEE
 
 #define SLEEP_TIME_3MIN  24
-#define SLEEP_TIME_5MIN  39//39
+#define SLEEP_TIME_5MIN  46//39
 #define SLEEP_TIME_10MIN 77
 #define SLEEP_TIME_PERM  255
 

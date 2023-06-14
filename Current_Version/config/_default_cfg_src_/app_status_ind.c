@@ -448,6 +448,10 @@ int app_status_indication_set(APP_STATUS_INDICATION_T status)
             app_pwl_start(APP_PWL_ID_0);
             break;
 	/** end add **/
+
+		case APP_STATUS_INDICATION_LINEIN:
+			break;
+			
         default:
             break;
     }

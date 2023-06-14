@@ -124,7 +124,6 @@ extern bool factory_reset_flag;
 
 
 static void reconnect_timeout_set(uint8_t rect);
-static void reconnect_timeout_stop(void);
 /** end add **/
 
 extern struct BT_DEVICE_T  app_bt_device;
@@ -889,7 +888,14 @@ void app_bt_accessible_manager_process(const btif_event_t *Event)
 #ifdef __EARPHONE_STAY_BOTH_SCAN__
 #ifdef __BT_ONE_BRING_TWO__
             if(btif_me_get_activeCons() == 0){
-                app_bt_accessmode_set_req(BTIF_BT_DEFAULT_ACCESS_MODE_PAIR);
+#ifdef __AC107_ADC__
+			if(apps_3p5_jack_get_val()) ;
+			else{
+				app_bt_accessmode_set_req(BTIF_BT_DEFAULT_ACCESS_MODE_PAIR);
+			}
+#else//m by cai
+			app_bt_accessmode_set_req(BTIF_BT_DEFAULT_ACCESS_MODE_PAIR);
+#endif
             }else if(btif_me_get_activeCons() == 1){
                 app_bt_accessmode_set_req(BTIF_BAM_CONNECTABLE_ONLY);
             }else if(btif_me_get_activeCons() >= 2){
@@ -2775,7 +2781,7 @@ static void app_bt_update_connectable_mode_after_connection_management(void)
 			bt_profile_manager[1].reconnect_cnt = 0;
 			isEnterConnetableOnlyState = true;
 			app_bt_accessmode_set(BTIF_BAM_NOT_ACCESSIBLE); 
-			app_status_indication_set(APP_STATUS_INDICATION_PAGESCAN);
+			//app_status_indication_set(APP_STATUS_INDICATION_PAGESCAN);//m by cai
 		}
 #endif
 
@@ -2802,9 +2808,17 @@ static void app_bt_update_connectable_mode_after_connection_management(void)
 			{
 				;
 			}
-			else{		 	
+			else{
+#ifdef __AC107_ADC__
+				if(apps_3p5_jack_get_val()) app_status_indication_set(APP_STATUS_INDICATION_LINEIN);
+				else{
+					app_bt_accessmode_set(BTIF_BAM_CONNECTABLE_ONLY);
+					app_status_indication_set(APP_STATUS_INDICATION_PAGESCAN);
+				}
+#else//m by cai
 				app_bt_accessmode_set(BTIF_BAM_CONNECTABLE_ONLY);
 				app_status_indication_set(APP_STATUS_INDICATION_PAGESCAN);
+#endif		
 			}
 		}
 		else{
@@ -5567,7 +5581,7 @@ static void reconnect_timeout_set(uint8_t rect)
 		//osTimerStart(reconnect_timeout_timer,OPENRECONNECT_TIMEOUT_IN_MS);
 }
 
-static void reconnect_timeout_stop(void)
+void reconnect_timeout_stop(void)
 {
     if (reconnect_timeout_timer == NULL)
        return;
@@ -5605,7 +5619,7 @@ static void reconnect_timeout_handler(void const *param)
 			bt_profile_manager[BT_DEVICE_ID_2].reconnect_mode = bt_profile_reconnect_null;
 			oenreconnect_flag=1;
 		}
-		app_bt_accessmode_set_req(BTIF_BT_DEFAULT_ACCESS_MODE_PAIR);//add by cai
+		if(!apps_3p5_jack_get_val() && !btif_me_get_activeCons()) app_bt_accessmode_set_req(BTIF_BT_DEFAULT_ACCESS_MODE_PAIR);//add by cai
     	if(oenreconnect_flag){
 			app_bt_update_connectable_mode_after_connection_management();			
     	}	
@@ -5616,16 +5630,13 @@ static void reconnect_timeout_handler(void const *param)
 
 void app_stop_openreconnecting(void)//add by cai
 {
-#ifdef __IAG_BLE_INCLUDE__
-	app_ble_refresh_adv_state(BLE_ADVERTISING_INTERVAL);
-#endif
 	osTimerStop(bt_profile_manager[BT_DEVICE_ID_1].connect_timer);
 	osTimerStop(bt_profile_manager[BT_DEVICE_ID_2].connect_timer);
-	bt_profile_manager[BT_DEVICE_ID_1].reconnect_cnt = APP_BT_PROFILE_RECONNECT_RETRY_LIMIT_CNT;
-	bt_profile_manager[BT_DEVICE_ID_2].reconnect_cnt = APP_BT_PROFILE_RECONNECT_RETRY_LIMIT_CNT;
+	app_bt_restore_reconnecting_idle_mode(BT_DEVICE_ID_1);
+	app_bt_restore_reconnecting_idle_mode(BT_DEVICE_ID_2);
+	bt_profile_manager[BT_DEVICE_ID_1].reconnect_cnt = 0;
+	bt_profile_manager[BT_DEVICE_ID_2].reconnect_cnt = 0;
 
-	bt_profile_manager[BT_DEVICE_ID_1].reconnect_mode = bt_profile_reconnect_null;
-	bt_profile_manager[BT_DEVICE_ID_2].reconnect_mode = bt_profile_reconnect_null;
 	app_bt_update_connectable_mode_after_connection_management();	
 }
 
